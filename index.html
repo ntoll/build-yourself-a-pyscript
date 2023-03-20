@@ -65,6 +65,17 @@
           </aside>
         </section>
         <section>
+          <p>What we'll cover:</p>
+          <ol>
+            <li>Get Python</li>
+            <li>Python's context</li>
+            <li>Interacting with the browser</li>
+          </ol>
+        </section>
+        <section>
+          <h2>1. Get Python</h2>
+        </section>
+        <section>
           <pre><code data-trim data-noescape>
 &lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -108,23 +119,99 @@ customElements.define("py-script", PyScript);
           <h3 class="fragment">😲</h3>
         </section>
         <section data-background-color="white">
-<svg
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   version="1.1"
-   width="342"
-   height="342"
-   id="svg2">
-  <path
-     d="m 0,0 h 164 v 267 h 14 V 0 H 342 V 342 H 267 V 75 H 253 V 342 H 89 V 75 L 75,75.5 V 342 H 0 Z m 317,278 h -20 v 34 h 20 z"
-     id="path4" />
-</svg>
+          <svg
+             xmlns:svg="http://www.w3.org/2000/svg"
+             xmlns="http://www.w3.org/2000/svg"
+             version="1.1"
+             width="342"
+             height="342"
+             id="svg2">
+            <path
+               d="m 0,0 h 164 v 267 h 14 V 0 H 342 V 342 H 267 V 75 H 253 V 342 H 89 V 75 L 75,75.5 V 342 H 0 Z m 317,278 h -20 v 34 h 20 z"
+               id="path4" />
+          </svg>
           <aside class="notes">
             <p>Let's add an actual Python interpreter shall we?</p>
             <p>All told, MicroPython is around a 300k download, and starts
             very quickly, even on mobile based browsers.</p>
             <p>Small and fast.</p>
           </aside>
+        </section>
+        <section>
+          <pre><code data-trim data-noescape data-line-numbers="8-16">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;title&gt;A simple PyScript example&lt;/title&gt;
+  &lt;script defer src="pyscript.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;py-script&gt;
+def hello(name="world!"):
+  """
+  Return a friendly greeting to the named entity.
+  """
+  return f"Hello, {name} (from MicroPython)."
+
+print(hello())
+  &lt;/py-script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+          </code></pre>
+          <a href="/example2/index.html" target="_blank">View</a>
+        </section>
+        <section>
+          <p>pyscript.js</p>
+          <pre><code data-trim data-noescape data-line-numbers="3-6|7-8|9-18|19-20|25-28|29-39|40-41">
+class PyScript extends HTMLElement {
+    connectedCallback() {
+        // grab the source code.
+        const code = this.textContent;  
+        // Remove the code from the DOM.
+        this.textContent = "";  
+        // JavaScript oh my..! 🤦
+        const self = this;
+        // Handle STDOUT events.
+        document.addEventListener('micropython-print', 
+            function(e) {
+                // Just append event data to the textual
+                // content of this element.
+                const content = self.textContent + e.data;
+                self.textContent = content;
+            }, 
+            false
+        );
+        // Eval the code.
+        mp_js_do_str(code);
+    }
+}
+
+
+// Inject MicroPython compiled to WASM into the page, via
+// a script tag.
+const pyElement = document.createElement("script");
+pyElement.src = "micropython.js";
+pyElement.onload = function(e) {
+    // Start up MicroPython
+    let mp_js_startup = Module['onRuntimeInitialized'];
+    Module["onRuntimeInitialized"] = async function() {
+        mp_js_startup();
+        mp_js_init(1024*1024);
+        // Register the class for the given element name,
+        // only after MicroPython is configured.
+        customElements.define("py-script", PyScript);
+    }
+}
+const head = document.getElementsByTagName('head')[0];
+head.appendChild(pyElement);
+          </code></pre>
+          <h3 class="fragment">😬😲🤔😱</h3>
+        </section>
+        <section>
+          <h2>2. Python's context</h2>
+        </section>
+        <section>
+          <h2>3. Interacting with the browser</h2>
         </section>
         <section>
           <h2>Questions..?</h2>
