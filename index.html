@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Build yourself a PyScript</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+          <h1>Build Yourself a PyScript</h1>
+          <aside class="notes">
+            <p>Thank organisers.</p>
+          </aside>
+        </section>
+        <section>
+          <p>TODO: Paul intro slide here</p>
+          <aside class="notes">
+            <p>TODO: Paul notes here.</p>
+          </aside>
+        </section>
+        <section data-background-image="img/tuba.jpg">
+          <aside class="notes">
+            <ul>
+              <li>I'm really a classically trained musician.</li>
+              <li>Teacher with a background in academic Philosophy.</li>
+              <li>Principal engineer on the PyScript team at Anaconda.</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background-image="img/wrestlers.jpg">
+          <aside class="notes">
+            <p>This talk in a single slide.</p>
+            <ul>
+              <li>Given the subject matter it might feel like watching a
+              tag wrestling match.</li>
+              <li>Yes, it can be painful.</li>
+              <li>But hopefully, it's also entertaining.</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background-image="img/pieces_of_the_platform_puzzle.png">
+          <aside class="notes">
+            <p>What is PyScript?</p>
+            <ul>
+              <li>A platform for Python in the browser.</li>
+              <li>Sits on top of Python interpreters compiled to web assembly
+              (e.g. Pyodide, MicroPython etc).</li>
+              <li>Different interpreters have different strengths and
+              weaknesses.</li>
+              <li>PyScript makes it simple to create and use frameworks or
+              your own application code on top of the platform.</li>
+            </ul>
+            <p>That's it!</p>
+          </aside>
+        </section>
+        <section>
+          <pre><code data-trim data-noescape>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;title&gt;A simple PyScript example&lt;/title&gt;
+  &lt;script defer src="pyscript.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;py-script&gt;print("Hello, world")&lt;/py-script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+          </code></pre>
+          <a href="/example1/index.html" target="_blank">View</a>
+        </section>
+        <section>
+          <p>pyscript.js</p>
+          <pre><code data-trim data-noescape data-line-numbers="1-6|7-11|12-13|14-15|16-17|21-22">
+/*
+Create a new custom tag by inheriting from the HTMLElement
+class.
+*/
+
+class PyScript extends HTMLElement {
+    connectedCallback() {
+        /*
+        Called when the element is first encountered in
+        the DOM.
+        */
+        // Grab the source code.
+        const code = this.textContent;
+        // Instantiate a "Python interpreter". ;-)
+        const re = /"(.*?)"/;
+        // Evaluate and emit to STDOUT ;-)
+        this.textContent = code.match(re)[0].slice(1, -1);
+    }
+}
+
+// Register the class for the given element name.
+customElements.define("py-script", PyScript);
+          </code></pre>
+          <h3 class="fragment">😲</h3>
+        </section>
+        <section data-background-color="white">
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="342"
+   height="342"
+   id="svg2">
+  <path
+     d="m 0,0 h 164 v 267 h 14 V 0 H 342 V 342 H 267 V 75 H 253 V 342 H 89 V 75 L 75,75.5 V 342 H 0 Z m 317,278 h -20 v 34 h 20 z"
+     id="path4" />
+</svg>
+          <aside class="notes">
+            <p>Let's add an actual Python interpreter shall we?</p>
+            <p>All told, MicroPython is around a 300k download, and starts
+            very quickly, even on mobile based browsers.</p>
+            <p>Small and fast.</p>
+          </aside>
+        </section>
+        <section>
+          <h2>Questions..?</h2>
+          <p>TL;DR: <a href="https://pyscript.net/">pyscript.net</a></p>
+        </section>
+			</div>
+		</div>
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+    <script src="customtags.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ],
+			});
+		</script>
+	</body>
+</html>
