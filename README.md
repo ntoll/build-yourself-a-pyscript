@@ -11,23 +11,25 @@ Slides for PyCon 2023.
   - The simplest PyScript / HTMLElement example
   - Let's add MicroPython for the MVP
 * Python's context
-  - CPython 3.11 WASM target
+  - Multiple interpreters underneath the PyScript platform:
+    + CPython 3.11 WASM target
+    + Pyodide
+    + MicroPython
+    + Weird shit that you should know is out there
   - Emscripten (filesystem and other libc shims)
-  - Pyodide
   - Packaging (micropip) &lt;py-conf&gt;
   - ...
-* Interacting with the browser
-  - Performance "budget": load/startup time, memory, battery
-  - Accessing the DOM
-  - Storage (filesystem, db)
-  - Handling events
-  - Don't block the main thread
-  - Web workers
-  - Synchronous Python in async browsers
+* Interacting with the browser (quick fire round to get the opponent to submit)
+  - Performance "budget": load/startup time, memory, battery (Paul)
+  - Accessing the DOM (Nicholas)
+  - Storage (filesystem, db) (Paul)
+  - Don't block the main thread (Nicholas)
+  - Handling events (Paul)
+  - Web workers (Nicholas)
+  - Synchronous Python in async browsers (Paul)
   - ...
 * Final thoughts / sign-posts
-  - There's a lot going on.
-  - Build frameworks (see PyperCard)
+  - Building frameworks (see PyperCard)
   - Open source... come play!
   - Other talks at this year's PyCon
 * Questions
