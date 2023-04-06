@@ -210,14 +210,56 @@ head.appendChild(pyElement);
         <section>
           <h2>2. Python's context</h2>
         </section>
-        <section>
-          <p>TODO: Multiple interpreters underneath PyScript</p>
+        <section data-background-image="img/multi-interpreters.png">
+          <aside class="notes">
+            <p>There are several choices of interpreter:</p>
+            <ul>
+              <li>Pyodide - the original and most highly developed solution</li>
+              <li>cPython - thanks to the work of Christian Heimes and Brett
+              Cannon, WASM is now a compilation target for cPython.</li>
+              <li>MicroPython - not what Damien was expecting, but it works
+              really well. He's currently spending time refining MicroPython's
+              WASM story.</li>
+              <li>Weird stuff - Zython, etc... </li>
+            </ul>
+          </aside>
         </section>
-        <section>
-          <p>TODO: Emscripten</p>
+        <section data-background-image="img/emscripten.png">
+          <aside class="notes">
+            <p>Emscripten allows you to port existing C/C++ code to WASM on
+            a web platform.</p>
+            <p>It's like the libc / POSIX / win32 layer, that abstracts away
+            the browser to provide common concepts like a filesystem.</p>
+          </aside>
         </section>
-        <section>
-          <p>TODO: Packaging</p>
+        <section data-background-video="img/unreal.webm" data-background-video-loop>
+          <aside class="notes">
+            <p>It's fast!</p>
+            <p>This is Unreal Engine running in a browser, on top of
+            Emscripten.</p>
+          </aside>
+        </section>
+        <section data-background-image="img/packaging.png">
+          <aside class="notes">
+            <p>Packaging with PyScript is mostly like Python:</p>
+            <ul>
+              <li>your browser tab is like your venv</li>
+              <li>`micropip` installs from PyPI</li>
+              <li>It just works!</li>
+            </ul>
+          </aside>
+        </section>
+        <section data-background-image="img/packaging2.jpg">
+          <aside class="notes">
+            <p>Except, packaging with PyScript is mostly like Python:</p>
+            <ul>
+              <li>packages with C extensions need to be compiled to WASM</li>
+              <li>you have to install all the packages each time you
+              navigate</li>
+              <li>sometimes, the browser isn't friendly to popular packages
+              (e.g. requests).</li>
+            </ul>
+          </aside>
         </section>
         <section>
           <h2>3. Interacting with the browser</h2>
