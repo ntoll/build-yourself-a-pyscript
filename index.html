@@ -99,10 +99,10 @@
         </section>
         <section>
             <p>pyscript.js</p>
-            <pre><code data-trim data-noescape data-line-numbers="1-6|7-11|12-13|14-15|16-17|21-22">
+            <pre><code data-trim data-noescape data-line-numbers="1-6|7-11|12-13|14-15|16-18|22-23">
 /*
-Create a new custom tag by inheriting from the HTMLElement
-class.
+Create a new custom tag by inheriting from the
+HTMLElement class.
 */
 
 class PyScript extends HTMLElement {
@@ -116,7 +116,8 @@ class PyScript extends HTMLElement {
         // Instantiate a "Python interpreter". ;-)
         const re = /"(.*?)"/;
         // Evaluate and emit to STDOUT ;-)
-        this.textContent = code.match(re)[0].slice(1, -1);
+        const output = code.match(re)[0].slice(1, -1);
+        this.textContent = output;
     }
 }
 
@@ -183,8 +184,8 @@ class PyScript extends HTMLElement {
             function(e) {
                 // Just append event data to the textual
                 // content of this element.
-                const content = self.textContent + e.data;
-                self.textContent = content;
+                const output = self.textContent + e.data;
+                self.textContent = output;
             }, 
             false
         );
@@ -276,86 +277,75 @@ head.appendChild(pyElement);
             <h2>3. Interacting with the browser</h2>
             <p>Quickfire round</p>
         </section>
-        <section>
-            <h2>1. Performance Budget</h2>
-        </section>
-        <section>
+        <section data-background-image="img/performance_budget.jpg">
+            <aside class="notes">
+            <h2>1. Performance Budget (Paul)</h2>
             <p>3G feature phone in countryside:</p>
             <ul>
                 <li>Download</li>
                 <li>Time-to-interactive</li>
                 <li>Battery</li>
             </ul>
-            <aside class="notes">
-                <ul>
-                    <li>(Paul)</li>
-                </ul>
+            <h2>Nicholas: Mobile web: <em>a</em> priority, not <em>the</em>.</h2>
             </aside>
         </section>
-        <section>
-            <h2>Mobile web: <em>a</em> priority, not <em>the</em>.</h2>
+        <section data-background-image="img/google.jpg">
             <aside class="notes">
-                <ul>
-                    <li>(Nicholas)</li>
-                </ul>
-            </aside>
-        </section>
-        <section>
-            <h2>But: PageRank gets influenced by this.</h2>
-            <aside class="notes">
-                <ul>
-                    <li>(Paul)</li>
-                </ul>
+            <h2>But: PageRank gets influenced by this. (Paul)</h2>
             </aside>
         </section>
 
 
-        <section>
-            <h2>2. DOM Access</h2>
-        </section>
-        <section>
-            <p>Pythonic way to do UI:</p>
-            <ul>
-                <li>Elements on screen</li>
-                <li>Event handlers</li>
-                <li></li>
-            </ul>
+        <section data-background-image="img/dom.jpg">
             <aside class="notes">
-                <ul>
-                    <li>(Nicholas)</li>
-                    <li>Show a "counter" code snippet on the left</li>
-                    <li>Show rendered on right</li>
-                    <li>Emphasize Python code that draws on screen, handles click</li>
-                </ul>
+              <h2>2. DOM Access</h2>
             </aside>
         </section>
         <section>
-            <h2>This is a competitive market!</h2>
-            <aside class="notes">
-                <ul>
-                    <li>(Paul)</li>
-                    <li>JS frontends have become really innovative</li>
-                    <li>Server-side pre-rendering is changing the landscape</li>
-                </ul>
-            </aside>
-        </section>
-        <section>
-            <h2>Major effort in PyScript</h2>
-                <ul>
-                    <li>And this topic gets harder in 5 min!</li>
-                    <li>If you have experience/ideas...come see us</li>
-                </ul>
-            <aside class="notes">
-                <ul>
-                    <li>(Nicholas)</li>
-                </ul>
-            </aside>
-        </section>
+          <pre><code data-trim data-noescape data-line-numbers="1-4|7-13|16-17|18-20">
+# js is globalThis (the browser window).
+from js import document
+# ffi is foreign function interface.
+from pyodide import ffi
 
-        <section>
-            <h2>3. Storage </h2>
+
+def handler(event):
+  """
+  Handle an event. Append something to the DOM.
+  """
+  output = document.createElement("span")
+  output.innerHTML = "🖱️"
+  document.body.appendChild(output)
+
+
+# Wrap the handler in a JS proxy.
+handler_proxy = ffi.create_proxy(handler)
+# Find the button, add the event listener.
+button = document.querySelector("button#click-me")
+button.addEventListener("click", handler_proxy)
+          </code></pre>
+            <a href="https://3fd38942-d35c-4bf6-9b8a-37cec059f572.pyscriptapps.com/39917e09-5407-486e-85f5-98f1d0a295ef/latest/" target="_blank">View</a>
+            <aside class="notes">
+              <p>(Nicholas) interacting with the DOM via ffi and js</p>
+            </aside>
         </section>
-        <section>
+        <section data-background-image="img/competition.jpg">
+            <aside class="notes">
+              <h2>(Paul) This is a competitive market!</h2>
+              <ul>
+                <li>JS frontends have become really innovative</li>
+                <li>Server-side pre-rendering is changing the landscape</li>
+              </ul>
+              <h2>(Nicholas) Major effort in PyScript</h2>
+              <ul>
+                <li>And this topic gets harder in 5 min!</li>
+                <li>If you have experience/ideas...come see us</li>
+              </ul>
+            </aside>
+        </section>
+        <section data-background-image="img/storage.jpg">
+            <aside class="notes">
+            <h2>3. (Paul)Storage </h2>
             <p>Re-think your concept of "storage":</p>
             <ul>
                 <li>There ain't no stinking disk</li>
@@ -363,107 +353,54 @@ head.appendChild(pyElement);
                 <li>Pyodide storages</li>
                 <li>The rise of OPFS and SQLite</li>
             </ul>
-            <aside class="notes">
-                <ul>
-                    <li>(P)</li>
-                </ul>
             </aside>
         </section>
-        <section>
-            <h2>Imagine: Offline-first Python apps</h2>
+        <section data-background-image="img/possibilities.png">
             <aside class="notes">
-                <ul>
-                    <li>(Nicholas)</li>
-                </ul>
+            <h2>(Nicholas) Imagine: Offline-first Python apps: Progressive web apps</h2>
+            <h2>(Paul) Repeat: If you have experience... come see us</h2>
             </aside>
         </section>
-        <section>
-            <h2>Repeat: If you have experience...</h2>
+        <section data-background-color="white" data-transition="none fast">
+          <img src="img/beachball.gif"/>
             <aside class="notes">
-                <ul>
-                    <li>(Paul)</li>
-                    <li>Come see us</li>
-                </ul>
-            </aside>
-        </section>
-
-        <section>
-            <h2>4. Blocking the UI</h2>
-        </section>
-        <section>
+            <h2>4. (Nicholas) Blocking the UI</h2>
             <h2>Ever seen this on a web page?</h2>
-            <aside class="notes">
-                <ul>
-                    <li>(Nicholas)</li>
-                    <li>Show animated image of beach ball</li>
-                </ul>
-            </aside>
-        </section>
-        <section>
             <p>Blocking the UI:</p>
             <ul>
                 <li>Browsers use a single thread for all JavaScript</li>
+            </ul>
+            </aside>
+        </section>
+        <section data-background-image="img/workers.jpg">
+            <aside class="notes">
+              (Nicholas)
+              <ul>
                 <li>Fortunately there's a solution: Web Workers</li>
                 <li>Pyodide supports web workers</li>
-            </ul>
-            <aside class="notes">
-                <ul>
-                    <li>(Nicholas)</li>
-                    <li>Close with: "we're golden, right"</li>
-                </ul>
+                <li>Close with: "we're golden, right"</li>
+              </ul>
             </aside>
         </section>
         <section>
-            <h2>Slow your roll</h2>
+            <h2>🛑 Slow your roll 🛑</h2>
             <aside class="notes">
+              <p>(Paul)</p>
                 <ul>
-                    <li>(Paul)</li>
                     <li>Web workers don't have access to the DOM, so no UI</li>
                     <li>No object access, just a JSON message passing</li>
                 </ul>
             </aside>
         </section>
-        <section>
-            <h2>Have no fear, PyScript is here!</h2>
+        <section data-background-color="white">
+          <video data-autoplay src="img/chat.webm" loop></video>
             <aside class="notes">
+            <h2>(Nicholas) Have no fear, PyScript is here!</h2>
+            <p>https://chat-animator.com/</p>
                 <ul>
-                    <li>(Nicholas)</li>
                     <li>Promote the Hood/Anthony work</li>
                     <li>Show some screenshot of proposed code</li>
                     <li>Encourage to come see us</li>
-                </ul>
-            </aside>
-        </section>
-
-        <section>
-            <h2>5. Event handling</h2>
-        </section>
-        <section>
-            <p></p>
-            <ul>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <aside class="notes">
-                <ul>
-                    <li>()</li>
-                </ul>
-            </aside>
-        </section>
-        <section>
-            <h2></h2>
-            <aside class="notes">
-                <ul>
-                    <li>()</li>
-                </ul>
-            </aside>
-        </section>
-        <section>
-            <h2></h2>
-            <aside class="notes">
-                <ul>
-                    <li>()</li>
                 </ul>
             </aside>
         </section>
@@ -474,13 +411,39 @@ head.appendChild(pyElement);
                 <li class="fragment">PyScript is a <em>platform</em>.</li>
                 <li class="fragment">Write code and frameworks on PyScript (ask me about PyperCard).</li>
                 <li class="fragment">It's open source... come play!</li>
-                <li class="fragment">Other talks at PyCon TODO!</li>
+                <li class="fragment">For the 99% (not just coders).</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Other stuff at PyCon!</h2>
+            <ul>
+              <li>PyScript for Education. Blake Rayfield (Sat, 10:45am)</li>
+              <li>The CPU in your browser: WASM demystified. Antonio Cuni (Sat, 12:15pm)</li>
+              <li>PyScript and the magic of Python in the browser. Fabio Pliger (Sat, 1:30pm)</li>
+              <li>An open space. (Sunday AM - see the board)</li>
+              <li>Sprints! (Monday to Thursday)</li>
             </ul>
         </section>
 
         <section>
             <h2>Questions..?</h2>
             <p>TL;DR: <a href="https://pyscript.net/">pyscript.net</a></p>
+        </section>
+
+        <section>
+          <h2>Image credits</h2>
+    <p>Photo by <a href="https://unsplash.com/pt-br/@beccatapert?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Becca Tapert</a> on <a href="https://unsplash.com/photos/QofjUnxy9LY?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+  
+    <p>Photo by <a href="https://unsplash.com/fr/@christianw?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Christian Wiediger</a> on <a href="https://unsplash.com/photos/zhZydTyNMPg?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+
+    <p>Photo by <a href="https://unsplash.com/@valerysysoev?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Valery Sysoev</a> on <a href="https://unsplash.com/photos/p9OkL4yW3C8?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+
+  <p>Photo by <a href="https://unsplash.com/de/@cadop?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Mathew Schwartz</a> on <a href="https://unsplash.com/s/photos/competition?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+  
+    <p>Photo by <a href="https://unsplash.com/@melodi2?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Lia Trevarthen</a> on <a href="https://unsplash.com/s/photos/storage?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+
+  <p>Photo by <a href="https://unsplash.com/@cloudveilczjx?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Eric Wang</a> on <a href="https://unsplash.com/photos/umD2Bj4FmMU?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+  
         </section>
     </div>
 </div>
